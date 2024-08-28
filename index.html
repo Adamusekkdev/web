@@ -3,32 +3,77 @@
 <head>
   <title>Strona HTML</title>
   <style>
-    .active-icon {
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    .container {
+      width: 80%;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .status {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .status-icon {
       font-size: 24px;
       margin-right: 5px;
+    }
+    .username {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .error-message {
+      color: #f00;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="user-info">
-    <span class="active-icon">Adamusekk jest </span>
-    <span id="username"></span>
+  <div class="container">
+    <div class="header">
+      <h1>Strona HTML</h1>
+    </div>
+    <div id="user-info">
+      <div class="status">
+        <span class="status-icon">:green_circle:</span>
+        <span id="status-text"></span>
+      </div>
+      <div class="username">
+        <span id="username"></span>
+      </div>
+    </div>
+    <div id="error-message" class="error-message"></div>
   </div>
 
   <script>
-    const webhookUrl = 'https://adamusekk.netlify.app/'; // 
+    const webhookUrl = 'https://adamusekk.netlify.app/'; // adres URL webhooka, który będzie wysyłał dane na stronę HTML
 
     async function updateUserInfo(data) {
       const userInfo = document.getElementById('user-info');
+      const statusText = document.getElementById('status-text');
       const username = document.getElementById('username');
-      const activeIcon = document.querySelector('.active-icon');
+      const statusIcon = document.querySelector('.status-icon');
+      const errorMessage = document.getElementById('error-message');
 
-      username.textContent = data.username;
       if (data.active) {
-        activeIcon.textContent = ':green_circle:';
+        statusText.textContent = 'Aktywny';
+        statusIcon.textContent = ':green_circle:';
       } else {
-        activeIcon.textContent = ':red_circle:';
+        statusText.textContent = 'Nieaktywny';
+        statusIcon.textContent = ':red_circle:';
       }
+      username.textContent = data.username;
+      errorMessage.textContent = '';
     }
 
     async function fetchUserData() {
@@ -37,13 +82,14 @@
         const data = await response.json();
         updateUserInfo(data);
       } catch (error) {
-        console.error(error);
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = 'Brak połączenia';
       }
     }
 
     fetchUserData();
 
-    setInterval(fetchUserData, 2000);
+    setInterval(fetchUserData, 2000); // aktualizuj informację co 5 sekund
   </script>
 </body>
 </html>
