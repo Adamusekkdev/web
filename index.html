@@ -24,7 +24,8 @@
       margin-bottom: 10px;
     }
     .status-icon {
-      font-size: 24px;
+      width: 24px;
+      height: 24px;
       margin-right: 5px;
     }
     .username {
@@ -45,7 +46,7 @@
     </div>
     <div id="user-info">
       <div class="status">
-        <span class="status-icon">:green_circle:</span>
+        <img class="status-icon" id="status-icon" src="red.png" alt="Nieaktywny">
         <span id="status-text"></span>
       </div>
       <div class="username">
@@ -62,15 +63,15 @@
       const userInfo = document.getElementById('user-info');
       const statusText = document.getElementById('status-text');
       const username = document.getElementById('username');
-      const statusIcon = document.querySelector('.status-icon');
+      const statusIcon = document.getElementById('status-icon');
       const errorMessage = document.getElementById('error-message');
 
       if (data.active) {
         statusText.textContent = 'Aktywny';
-        statusIcon.textContent = ':green_circle:';
+        statusIcon.src = 'green.png';
       } else {
         statusText.textContent = 'Nieaktywny';
-        statusIcon.textContent = ':red_circle:';
+        statusIcon.src = 'red.png';
       }
       username.textContent = data.username;
       errorMessage.textContent = '';
