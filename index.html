@@ -1,32 +1,49 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>portfilo Adamusekk</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Koulen&family=Lato&family=Nunito&family=Playfair+Display:ital@1&family=Prata&family=Raleway:ital,wght@1,100&family=Roboto&family=Roboto+Condensed&family=Teko&display=swap" rel="stylesheet">
+  <title>Strona HTML</title>
+  <style>
+    .active-icon {
+      font-size: 24px;
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
-<div id="background">
-</div>
-<img src="avatar.jpg" alt="Logo" class="avatar">
-<div class="firsttext">
-    <h1>Adamusekk</h1>
-    <p>Junior Developer</p>
-</div>
-<div class="button-container">
-    <a href="https://smoothwizard.com/pl/strona-glowna/" target="_blank">
-    <button class="button">Soon1</button>
-    </a>
-    <a href="https://pliki.skullmedia.pl" target="_blank">
-        <button class="button">Soon1</button>
-    </a>
-    <a href="https://skullmedia.pl" target="_blank">
-        <button class="button">Soon1</button>
-    </a>    
-</div>
-<script src="scripts.js"></script>
+  <div id="user-info">
+    <span class="active-icon">:green_circle:</span>
+    <span id="username"></span>
+  </div>
+
+  <script>
+    const webhookUrl = 'https://adamusekk.netlify.app/'; // 
+
+    async function updateUserInfo(data) {
+      const userInfo = document.getElementById('user-info');
+      const username = document.getElementById('username');
+      const activeIcon = document.querySelector('.active-icon');
+
+      username.textContent = data.username;
+      if (data.active) {
+        activeIcon.textContent = ':green_circle:';
+      } else {
+        activeIcon.textContent = ':red_circle:';
+      }
+    }
+
+    async function fetchUserData() {
+      try {
+        const response = await fetch(webhookUrl);
+        const data = await response.json();
+        updateUserInfo(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUserData();
+
+    setInterval(fetchUserData, 2000);
+  </script>
 </body>
 </html>
-// license = Adamusekk
